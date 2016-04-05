@@ -1,4 +1,4 @@
-System.register(['angular2/core', './product-filter.pipe', '../shared/star.component'], function(exports_1, context_1) {
+System.register(['angular2/core', './product-filter.pipe', '../shared/star.component', './product.service'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', './product-filter.pipe', '../shared/star.compo
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, product_filter_pipe_1, star_component_1;
+    var core_1, product_filter_pipe_1, star_component_1, product_service_1;
     var ProductListComponent;
     return {
         setters:[
@@ -22,43 +22,26 @@ System.register(['angular2/core', './product-filter.pipe', '../shared/star.compo
             },
             function (star_component_1_1) {
                 star_component_1 = star_component_1_1;
+            },
+            function (product_service_1_1) {
+                product_service_1 = product_service_1_1;
             }],
         execute: function() {
             ProductListComponent = (function () {
-                function ProductListComponent() {
+                function ProductListComponent(_productService) {
+                    this._productService = _productService;
                     this.pageTitle = 'Product List';
                     this.imageWidth = 50;
                     this.imageMargin = 2;
                     this.showImage = false;
-                    this.listFilter = 'cart';
-                    this.products = [
-                        {
-                            "productId": 1,
-                            "productName": "Leaf Rake",
-                            "productCode": "GDN-0011",
-                            "releaseDate": "March 19, 2016",
-                            "description": "Leaf rake with 48-inch wooden handle.",
-                            "price": 19.95,
-                            "starRating": 3.2,
-                            "imageUrl": "http://openclipart.org/image/300px/svg_to_png/26215/Anonymous_Leaf_Rake.png"
-                        },
-                        {
-                            "productId": 2,
-                            "productName": "Garden Cart",
-                            "productCode": "GDN-0023",
-                            "releaseDate": "March 18, 2016",
-                            "description": "15 gallon capacity rolling garden cart",
-                            "price": 32.99,
-                            "starRating": 4.2,
-                            "imageUrl": "http://openclipart.org/image/300px/svg_to_png/58471/garden_cart.png"
-                        }
-                    ];
                 }
                 ProductListComponent.prototype.toggleImage = function () {
                     this.showImage = !this.showImage;
                 };
                 ProductListComponent.prototype.ngOnInit = function () {
-                    console.log('In OnInit');
+                    var _this = this;
+                    this._productService.getProducts()
+                        .subscribe(function (products) { return _this.products = products; }, function (error) { return _this.errorMessage = error; });
                 };
                 ProductListComponent.prototype.onRatingClicked = function (message) {
                     this.pageTitle = 'Product List: ' + message;
@@ -71,7 +54,7 @@ System.register(['angular2/core', './product-filter.pipe', '../shared/star.compo
                         pipes: [product_filter_pipe_1.ProductFilterPipe],
                         directives: [star_component_1.StarComponent]
                     }), 
-                    __metadata('design:paramtypes', [])
+                    __metadata('design:paramtypes', [product_service_1.ProductService])
                 ], ProductListComponent);
                 return ProductListComponent;
             }());
